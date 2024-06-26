@@ -13,17 +13,17 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v4
-    - name: dependecy install build and test
+    - name: dependecy install 
       run: mvn clean install
   build:
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v4
-    - name: dependecy install build and test
+    - name: build 
       run: mvn package
   test:
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v4
-    - name: dependecy install build and test
+    - name: test
       run: mvn test
