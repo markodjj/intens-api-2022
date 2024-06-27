@@ -30,6 +30,7 @@ jobs:
        docker build -t markodj .
        docker tag markodj:latest public.ecr.aws/k9r4x3e0/markodj:latest
        docker push public.ecr.aws/k9r4x3e0/markodj:latest
+
        
        
        
