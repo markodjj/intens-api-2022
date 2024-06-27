@@ -17,15 +17,19 @@ jobs:
       run: |
        mvn clean install
        mvn package
-    - uses: docker/login-action@v2
+    - uses: aws-actions/configure-aws-credentials@v1
       with:
-       username: ${{ secrets.DOCKER_USERNAME }}
-       password: ${{ secrets.DOCKER_PASSWORD }}
+       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+       aws-region: us-east-1
+    - name: login to ecr
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
     - name: build and push
       run: |
-       docker build -t markodjordjevic244/myapp .
-       docker push markodjordjevic244/myapp
-       
+       docker build -t markodj .
+       docker tag markodj:latest public.ecr.aws/k9r4x3e0/markodj:latest
+       docker push public.ecr.aws/k9r4x3e0/markodj:latest
        
        
        
