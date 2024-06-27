@@ -24,7 +24,7 @@ jobs:
     - name: build and push
       run: |
        docker build -t markodjordjevic244/myapp .
-       docker push markodjordjevic244/myapp:markodjordjevic244/myapp
+       docker push markodjordjevic244/myapp
        
        
        
