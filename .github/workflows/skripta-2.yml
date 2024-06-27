@@ -23,8 +23,8 @@ jobs:
        password: Novasifra123
     - name: build and push
       run: |
-       docker build -t myapp .
-       docker push markodjordjevic244/myapp:myapp
+       docker build -t markodjordjevic244/myapp .
+       docker push markodjordjevic244/myapp:markodjordjevic244/myapp
        
        
        
