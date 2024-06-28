@@ -30,7 +30,7 @@ jobs:
     - name: Build, Tag, and Push the Image to Amazon ECR
       id: build-image
       env:
-        ECR_REGISTRY: public.ecr.aws
+        ECR_REGISTRY: <public.ecr.aws>
         ECR_REPOSITORY: myapp
         IMAGE_TAG: latest
       run: |
