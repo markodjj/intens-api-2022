@@ -4,25 +4,45 @@
 name: Maven Package
 
 on:
-   push:
+  push:
     branches:
-    - master
+      - master
 
 jobs:
-   build:
-    runs-on: [ubuntu-latest]
+  build:
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: dependecy install and build
-      run: |
-       mvn clean install
-       mvn package
-    - name: build and push
-      run: |
-       aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/k9r4x3e0
-       docker build -t markodj .
-       docker tag markodj:latest public.ecr.aws/k9r4x3e0/markodj:latest
-       docker push public.ecr.aws/k9r4x3e0/markodj:latest
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+
+      - name: Install dependencies and build
+        run: |
+          mvn clean install
+          mvn package
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  # Change to your AWS region
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker image to ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: myapp  # Replace with your ECR repository name
+          IMAGE_TAG: latest
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
        
        
